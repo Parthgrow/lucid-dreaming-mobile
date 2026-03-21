@@ -1,0 +1,78 @@
+import { Link } from 'expo-router';
+import React, { useState } from 'react';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useAuth } from '@/hooks/use-auth';
+
+export default function LoginScreen() {
+  const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      await login(email.trim(), password);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <SafeAreaView className="flex-1 bg-black">
+      <KeyboardAvoidingView
+        className="flex-1 justify-center px-6"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+
+        <Text className="text-white text-3xl font-bold mb-2">Welcome back</Text>
+        <Text className="text-[#888888] text-sm mb-10 tracking-widest uppercase">Sign in to continue</Text>
+
+        <TextInput
+          className="bg-[#111111] border border-[#2A2A2A] text-white rounded-lg px-4 py-4 mb-4"
+          placeholder="Email"
+          placeholderTextColor="#888888"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+
+        <TextInput
+          className="bg-[#111111] border border-[#2A2A2A] text-white rounded-lg px-4 py-4 mb-4"
+          placeholder="Password"
+          placeholderTextColor="#888888"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+
+        {error ? (
+          <Text className="text-[#EF4444] text-sm mb-4">{error}</Text>
+        ) : null}
+
+        <Pressable
+          onPress={handleLogin}
+          disabled={loading}
+          className="bg-[#00BCD4] rounded-lg py-4 items-center mb-6">
+          {loading
+            ? <ActivityIndicator color="#000000" />
+            : <Text className="text-black font-semibold text-base">Sign In</Text>}
+        </Pressable>
+
+        <View className="flex-row justify-center">
+          <Text className="text-[#888888] text-sm">Don't have an account? </Text>
+          <Link href="/(auth)/signup">
+            <Text className="text-[#00BCD4] text-sm">Sign up</Text>
+          </Link>
+        </View>
+
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+}
