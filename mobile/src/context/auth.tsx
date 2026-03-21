@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await SecureStore.setItemAsync(TOKEN_KEY, data.token);
     setToken(data.token);
     setUser(data.user);
-    router.replace('/(app)');
+    router.replace('/(app)/(tabs)');
   };
 
   const signup = async (email: string, password: string) => {
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     await SecureStore.setItemAsync(TOKEN_KEY, data.token);
     setToken(data.token);
     setUser(data.user);
-    router.replace('/(app)');
+    router.replace('/(app)/(tabs)');
   };
 
   const logout = async () => {

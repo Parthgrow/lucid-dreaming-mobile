@@ -15,7 +15,7 @@ const AuthGate = () => {
   const inAuthGroup = segments[0] === '(auth)';
 
   if (!token && !inAuthGroup) return <Redirect href="/(auth)/login" />;
-  if (token && inAuthGroup) return <Redirect href="/(app)" />;
+  if (token && inAuthGroup) return <Redirect href="/(app)/(tabs)" />;
 
   return <Slot />;
 };
