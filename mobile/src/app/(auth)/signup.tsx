@@ -72,6 +72,10 @@ export default function SignupScreen() {
           </Link>
         </View>
 
+        <Text className="text-[#2A2A2A] text-xs text-center mt-8">
+          {process.env.EXPO_PUBLIC_API_URL ?? 'no url set'}
+        </Text>
+
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

@@ -8,7 +8,8 @@
     "scheme": "luciddreamingapp",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.luciddreaming.app"
     },
     "android": {
       "package": "com.luciddreaming.app",
@@ -42,6 +43,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "3af19720-3888-46bb-81f4-49ed8da252f8"
+      }
     }
   }
 }
