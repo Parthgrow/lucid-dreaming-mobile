@@ -26,6 +26,25 @@ export default function AppLayout() {
             headerTitleStyle: { fontWeight: '600' },
           }}
         />
+        <Stack.Screen
+          name="plans/new"
+          options={{
+            title: 'New Plan',
+            headerStyle: { backgroundColor: '#000' },
+            headerTintColor: '#fff',
+            headerTitleStyle: { fontWeight: '600' },
+            presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name="plans/[id]"
+          options={{
+            title: 'Plan',
+            headerStyle: { backgroundColor: '#000' },
+            headerTintColor: '#fff',
+            headerTitleStyle: { fontWeight: '600' },
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );

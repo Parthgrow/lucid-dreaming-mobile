@@ -24,6 +24,12 @@ interface Dream {
   createdAt: string;
 }
 
+interface ActivePlan {
+  id: string;
+  title: string;
+  sankalpa: string;
+}
+
 function formatDateLabel(dateStr: string): string {
   const today = new Date().toISOString().split('T')[0];
   const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
@@ -40,16 +46,21 @@ export default function HomeScreen() {
   const { token, logout, user } = useAuth();
   const router = useRouter();
   const [dreams, setDreams] = useState<Dream[]>([]);
+  const [activePlan, setActivePlan] = useState<ActivePlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const fetchDreams = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const res = await fetch(`${BASE_URL}/dreams`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setDreams(Array.isArray(data) ? data : []);
+      const [dreamsRes, plansRes] = await Promise.all([
+        fetch(`${BASE_URL}/dreams`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${BASE_URL}/dream-plans`, { headers: { Authorization: `Bearer ${token}` } }),
+      ]);
+      const dreamsData = await dreamsRes.json();
+      const plansData = await plansRes.json();
+      setDreams(Array.isArray(dreamsData) ? dreamsData : []);
+      const active = Array.isArray(plansData) ? plansData.find((p: any) => p.isActive) ?? null : null;
+      setActivePlan(active);
     } catch {
       // silently fail — empty state shown
     } finally {
@@ -61,13 +72,13 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(() => {
       setLoading(true);
-      fetchDreams();
-    }, [fetchDreams])
+      fetchData();
+    }, [fetchData])
   );
 
   const onRefresh = () => {
     setRefreshing(true);
-    fetchDreams();
+    fetchData();
   };
 
   // Group dreams by date
@@ -110,12 +121,26 @@ export default function HomeScreen() {
           <ActivityIndicator color="#00BCD4" />
         </View>
       ) : dreams.length === 0 ? (
-        <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-[#2A2A2A] text-6xl mb-4">◎</Text>
-          <Text className="text-white text-lg font-semibold mb-2">No dreams yet</Text>
-          <Text className="text-[#888888] text-sm text-center">
-            Tap + to log your first dream entry
-          </Text>
+        <View className="flex-1 px-6">
+          {activePlan ? (
+            <Pressable
+              onPress={() => router.push(`/plans/${activePlan.id}`)}
+              className="bg-[#0D2B2E] border border-[#00BCD4] rounded-xl p-5 mt-4 mb-6 active:opacity-80">
+              <Text className="text-[#00BCD4] text-xs tracking-widest uppercase mb-2">
+                Active Sankalpa
+              </Text>
+              <Text className="text-white text-base italic" numberOfLines={2}>
+                "{activePlan.sankalpa || activePlan.title}"
+              </Text>
+            </Pressable>
+          ) : null}
+          <View className="flex-1 items-center justify-center">
+            <Text className="text-[#2A2A2A] text-6xl mb-4">◎</Text>
+            <Text className="text-white text-lg font-semibold mb-2">No dreams yet</Text>
+            <Text className="text-[#888888] text-sm text-center">
+              Tap + to log your first dream entry
+            </Text>
+          </View>
         </View>
       ) : (
         <FlatList
@@ -123,6 +148,20 @@ export default function HomeScreen() {
           keyExtractor={item => item.key}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#00BCD4" />}
           contentContainerStyle={{ paddingHorizontal: 24, paddingBottom: 100 }}
+          ListHeaderComponent={
+            activePlan ? (
+              <Pressable
+                onPress={() => router.push(`/plans/${activePlan.id}`)}
+                className="bg-[#0D2B2E] border border-[#00BCD4] rounded-xl p-5 mt-4 mb-2 active:opacity-80">
+                <Text className="text-[#00BCD4] text-xs tracking-widest uppercase mb-2">
+                  Active Sankalpa
+                </Text>
+                <Text className="text-white text-base italic" numberOfLines={2}>
+                  "{activePlan.sankalpa || activePlan.title}"
+                </Text>
+              </Pressable>
+            ) : null
+          }
           renderItem={({ item }) => {
             if (item.type === 'header') {
               return (
