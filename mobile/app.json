@@ -7,6 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "luciddreamingapp",
     "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.luciddreaming.app"
@@ -14,6 +15,10 @@
     "android": {
       "package": "com.luciddreaming.app",
       "usesCleartextTraffic": true,
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "INTERNET"
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",

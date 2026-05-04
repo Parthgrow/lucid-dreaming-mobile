@@ -32,7 +32,15 @@ export default function AppTabs() {
       <NativeTabs.Trigger name="stats">
         <NativeTabs.Trigger.Label>Stats</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/explore.png')}
+          src={require('@/assets/images/tabIcons/stats.png')}
+          renderingMode="template"
+        />
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="meditation">
+        <NativeTabs.Trigger.Label>Meditate</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon
+          src={require('@/assets/images/tabIcons/meditation.png')}
           renderingMode="template"
         />
       </NativeTabs.Trigger>
