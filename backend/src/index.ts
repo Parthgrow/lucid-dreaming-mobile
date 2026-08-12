@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import cors from 'cors';
 import './config/firebase';
 import authRouter from './routes/auth';
 import dreamsRouter from './routes/dreams';
@@ -9,6 +10,9 @@ import userRouter from './routes/user';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const corsOrigins = process.env.CORS_ORIGIN?.split(',').map((o) => o.trim());
+
+app.use(cors({ origin: corsOrigins ?? true }));
 app.use(express.json());
 
 app.use('/auth', authRouter);
