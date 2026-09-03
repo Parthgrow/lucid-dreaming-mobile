@@ -7,15 +7,12 @@
     "icon": "./assets/images/icon.png",
     "scheme": "luciddreamingapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.luciddreaming.app"
     },
     "android": {
       "package": "com.luciddreaming.app",
-      "usesCleartextTraffic": true,
-      "edgeToEdgeEnabled": true,
       "permissions": [
         "INTERNET"
       ],
@@ -43,7 +40,19 @@
           }
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font",
+      "expo-image",
+      "expo-status-bar",
+      "expo-web-browser",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
