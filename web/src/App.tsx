@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LoginPage from './pages/LoginPage';
 import AddDreamPage from './pages/AddDreamPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token } = useAuth();
@@ -14,6 +15,7 @@ function Routed() {
 
   return (
     <Routes>
+      <Route path="/privacy" element={<PrivacyPolicyPage />} />
       <Route
         path="/login"
         element={token ? <Navigate to="/add-dream" replace /> : <LoginPage />}
